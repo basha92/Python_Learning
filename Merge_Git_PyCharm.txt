@@ -1,0 +1,8 @@
+# This file provides comments to merge git with any editor.
+# Here pycharm editor is used.
+1. Create an empty folder to use
+2.Add the folder as directory in pycharm/Open the folder in VS.
+git clone url - copies the repository into the editor
+After cloning, use cd (change directory) to get inside the cloned repository.
+Create a text file (for check) inside that and add some comments
+In visual studio, this file will be marked as U - unmodified.
