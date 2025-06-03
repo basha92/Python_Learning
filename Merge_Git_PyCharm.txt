@@ -6,3 +6,12 @@ git clone url - copies the repository into the editor
 After cloning, use cd (change directory) to get inside the cloned repository.
 Create a text file (for check) inside that and add some comments
 In visual studio, this file will be marked as U - unmodified.
+use git add (file name) to add the directory into the repo.
+During this if it is showing any fatal error like "fatal: detected dubious ownership in repository", use the following command:
+git config --global --add safe.directory '*' - to make it as safe directory.
+use git status to see the untracked files.
+To commit this test file, use git commit -m "commit message"
+To push this file into repo, use git push origin main (This will push the file into the linked repository's main branch)
+
+To edit an already existing file in Pycharm, use add, commit push flow after making changes.
+If you are editing file in Git Web, use git pull to update it to local before editing anything new.
