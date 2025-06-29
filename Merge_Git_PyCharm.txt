@@ -15,3 +15,9 @@ To push this file into repo, use git push origin main (This will push the file i
 
 To edit an already existing file in Pycharm, use add, commit push flow after making changes.
 If you are editing file in Git Web, use git pull to update it to local before editing anything new.
+
+git init - initiates a empty repository
+git add . (dot) - adds all the edited files to repo and move them to staging
+git remote add origin URL - allows to push the changes to an online directory which is different than the current one
+git branch - creates a new branch in a different name than main
+git branch -m (name) - creates a branch in the specified name
