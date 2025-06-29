@@ -11,3 +11,6 @@ git push -u origin <branch name>
 #after any command if the terminal shows : press q to quit.
 #to work on the project,
 git checkout <branch name>
+while switching between the branches, the pushed through the branch only will appear. others won't. To make it visible, merge with main.
+git merge <branch name> - provide the other name than the one you are currently on.
+#if you are in main, give sub branch name, not give main.
