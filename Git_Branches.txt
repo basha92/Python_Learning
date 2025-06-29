@@ -1,0 +1,13 @@
+#this text file is about branching concepts in git. already some comments are added back in the merge git pycharm file.
+# List my branches
+git branch or git branch -a
+#get all changes done in web to local
+git pull
+#create a new branch
+git branch <branch name>
+#push it to remote
+git push -u origin <branch name>
+
+#after any command if the terminal shows : press q to quit.
+#to work on the project,
+git checkout <branch name>
