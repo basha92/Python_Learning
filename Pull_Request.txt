@@ -8,5 +8,13 @@ In simple terms, pull request is for asking a review on the changes done on
 different branch, approve it and merge it to the main branch.
 process:
 do the changes in different branch
-add the changes using git add .
+add the changes using git add . or git add (file name).
 commit them using git commit -m "commit message"
+
+Pull request is basically used by the user who don't have access to the main branch to do the changes.
+After commiting the code, push it to the created branch using git push origin branch_name.
+Go to the git website, click on the pull request tab and create a new pull request.
+We can compare the difference in the changes by comparing the main and created branch.
+Add the required comit message and click on create pull request. 
+Now admin of the main branch can see the pull request using his login, review the request and merge it to the main.
+After that, all the changes from new branch will be merged to the main branch.
