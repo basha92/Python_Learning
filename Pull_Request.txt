@@ -1,0 +1,12 @@
+A pull request is a proposal to merge a set of changes from one branch into another. 
+In a pull request, collaborators can review and discuss the proposed set of changes 
+before they integrate the changes into the main codebase. 
+Pull requests display the differences, or diffs, between the content in 
+the source branch and the content in the target branch.
+
+In simple terms, pull request is for asking a review on the changes done on 
+different branch, approve it and merge it to the main branch.
+process:
+do the changes in different branch
+add the changes using git add .
+commit them using git commit -m "commit message"
