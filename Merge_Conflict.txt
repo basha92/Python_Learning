@@ -1,0 +1,2 @@
+Conflicts occur many times when the user made edits on the same file from different branches.
+City Name: None
