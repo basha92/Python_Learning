@@ -1,4 +1,8 @@
 Conflicts occur many times when the user made edits on the same file from different branches.
 City Name: None
+<<<<<<< HEAD
+=======
+
+>>>>>>> 102a29f (Updated file to resolve conflict)
 Conflicts occur many times when the user made edits on the same file from different branches.
 City Name: Chenni
