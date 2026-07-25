@@ -1,0 +1,18 @@
+**Why did you choose Python?**
+Python has clean, readable syntax, a huge standard library, and strong community/ecosystem support for automation, scripting, data processing, and rapid development — which reduces development time and maintenance effort.
+
+**What are variables?**
+Named references to memory locations that store data values. In Python, variables are dynamically typed — you don't declare a type explicitly; the interpreter infers it at runtime based on the assigned value.
+
+**Difference between int, float, string, boolean**
+- **int** – whole numbers (e.g., `5`, `-10`), no decimal point.
+- **float** – numbers with decimal points, used for real/fractional values (e.g., `5.0`, `3.14`).
+- **string** – sequence of characters enclosed in quotes, used for text (e.g., `"hello"`).
+- **boolean** – logical type with only two values: `True` or `False`, used for conditions/comparisons.
+
+**Why is Python popular for automation?**
+- Simple, readable syntax that speeds up scripting.
+- Rich set of libraries (`os`, `subprocess`, `selenium`, `pyautogui`, `paramiko`, etc.) for file handling, web automation, network tasks, and system scripting.
+- Cross-platform compatibility.
+- Easy integration with other tools/APIs.
+- Large community support, so pre-built solutions exist for most automation needs.
