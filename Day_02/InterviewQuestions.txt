@@ -1,0 +1,295 @@
+#this is regarding functions interview questions
+Here's how a strong candidate would answer these in a technical interview:
+
+**1. What is a function?**
+
+A function is a named, reusable block of code that encapsulates a specific task or computation. In Python, it's a first-class object created with the `def` keyword (or `lambda` for anonymous functions), meaning it can be assigned to variables, passed as an argument, returned from other functions, and stored in data structures. Functions have their own local scope, accept input via parameters, and can produce output via `return`.
+
+```python
+def add(a, b):
+    return a + b
+```
+
+**2. Why do we use functions?**
+
+Interviewers look for these points:
+- **Modularity/DRY (Don't Repeat Yourself)** — avoid duplicating logic
+- **Abstraction** — hide implementation details behind a clean interface
+- **Reusability** — write once, call many times
+- **Testability** — isolated units are easier to unit test
+- **Maintainability** — bug fixes/changes happen in one place
+- **Namespace isolation** — local scope avoids polluting global scope
+
+**3. Difference between `print()` and `return`**
+
+| Aspect | `print()` | `return` |
+|---|---|---|
+| Purpose | Displays output to console (side effect) | Sends a value back to the caller |
+| Return value | `print()` itself returns `None` | Ends function execution and produces a usable value |
+| Usability | Output can't be stored or reused programmatically | Output can be assigned, chained, or passed to other functions |
+| Execution | Doesn't stop the function | Immediately terminates function execution |
+
+```python
+def add(a, b):
+    print(a + b)   # prints to console, function returns None
+
+def add2(a, b):
+    return a + b   # value can be captured
+
+result = add(2, 3)      # result = None
+result2 = add2(2, 3)    # result2 = 5
+```
+
+A good candidate will emphasize: *"`print` is for human-readable output; `return` is for passing data back into the program's logic."*
+
+**4. What is a parameter?**
+
+A parameter is a variable listed in a function's definition that acts as a placeholder for the value(s) the function expects to receive when called. It's distinct from an **argument**, which is the actual value passed during the function call — interviewers often specifically probe this distinction.
+
+```python
+def greet(name):     # 'name' is a parameter
+    return f"Hello, {name}"
+
+greet("Alice")        # "Alice" is the argument
+```
+
+Python also supports several parameter types worth mentioning:
+- Positional parameters
+- Default/keyword parameters (`def f(x=10)`)
+- Variable-length positional (`*args`)
+- Variable-length keyword (`**kwargs`)
+- Keyword-only and positional-only parameters (using `*` and `/` markers)
+
+**5. Can a function return multiple values?**
+
+Yes — technically, Python functions always return a single object, 
+but that object can be a **tuple** (created implicitly via comma separation), 
+which gives the appearance of multiple return values. 
+On the caller side, this is unpacked into multiple variables.
+
+```python
+def min_max(numbers):
+    return min(numbers), max(numbers)   # implicitly packed into a tuple
+
+low, high = min_max([4, 1, 9, 2])   # unpacking
+print(low, high)   # 1 9
+```
+
+A precise answer should note: `return min(numbers), max(numbers)` is equivalent to `return (min(numbers), max(numbers))` 
+— the parentheses are optional due to tuple packing. You can also return other containers 
+(list, dict, custom object) if multiple values need to be bundled with more structure.
+
+Here are the classic "gotcha" follow-ups, along with the answers that separate strong candidates from average ones:
+
+## 1. Mutable Default Arguments
+
+**The trap question:** "What's wrong with this code?"
+
+```python
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+```
+
+**What interviewers want to hear:**
+
+Default argument values are evaluated **once**, at function definition time — 
+not on every call. Since a list is mutable, that same list object persists across calls 
+and accumulates state.
+
+```python
+print(add_item(1))  # [1]
+print(add_item(2))  # [1, 2]  <- unexpected! not [2]
+```
+
+**Correct fix:**
+
+```python
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+```
+
+A strong candidate will generalize: *"This applies to any mutable default — 
+lists, dicts, sets, or custom mutable objects. Immutable defaults (int, str, tuple, None) 
+are safe."*
+
+---
+
+## 2. `*args` and `**kwargs` internals
+
+**The trap:** "What are the actual types of `args` and `kwargs` inside the function?"
+
+```python
+def func(*args, **kwargs):
+    print(type(args), type(kwargs))
+```
+
+- `args` → **tuple** of positional arguments
+- `kwargs` → **dict** of keyword arguments
+
+**Follow-up trap:** parameter ordering rules.
+
+```python
+def func(a, b, *args, c, **kwargs):
+    ...
+```
+
+Valid order is: positional → `*args` → keyword-only → `**kwargs`. 
+Anything after `*args` becomes **keyword-only** (must be passed by name).
+
+**Another common trap:** unpacking on the *call* side vs *definition* side.
+
+```python
+def func(a, b, c):
+    return a + b + c
+
+nums = [1, 2, 3]
+func(*nums)          # unpacks list into positional args
+
+d = {'a': 1, 'b': 2, 'c': 3}
+func(**d)            # unpacks dict into keyword args
+```
+
+Interviewers may also ask: *"Are `args` and `kwargs` required names?"* — 
+No, they're convention only; `*` and `**` are what matter, not the names.
+
+---
+
+## 3. Scope / Closures
+
+**The trap:** "What does this print?"
+
+```python
+x = 10
+
+def outer():
+    x = 20
+    def inner():
+        print(x)
+    inner()
+
+outer()
+```
+
+Answer: `20` — this tests understanding of **LEGB** scope resolution 
+(Local → Enclosing → Global → Built-in).
+
+**The harder trap — late binding in closures:**
+
+```python
+funcs = []
+for i in range(3):
+    funcs.append(lambda: i)
+
+print([f() for f in funcs])
+```
+
+Most candidates guess `[0, 1, 2]`. The correct answer is `[2, 2, 2]`, because 
+closures capture the **variable**, not its value at creation time. By the time the lambdas 
+execute, the loop has finished and `i` is `2`.
+
+**Fix — force early binding via default argument:**
+
+```python
+funcs = [lambda i=i: i for i in range(3)]
+print([f() for f in funcs])   # [0, 1, 2]
+```
+
+**Also expect:** the `nonlocal` keyword.
+
+```python
+def counter():
+    count = 0
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
+```
+
+Without `nonlocal`, `count += 1` inside `increment()` would raise `UnboundLocalError`, 
+because assignment inside a function makes a variable local by default unless declared otherwise.
+
+---
+
+## 4. `yield` vs `return`
+
+**The trap:** "How does `yield` change function behavior?"
+
+Key technical distinctions interviewers check for:
+
+| Aspect | `return` | `yield` |
+|---|---|---|
+| Function type | Regular function | Turns function into a **generator** |
+| Execution | Terminates function, returns once | Pauses execution, preserves local state, resumes on next call |
+| Memory | Computes and returns full result at once | Produces values **lazily**, one at a time (memory-efficient) |
+| Call behavior | Returns a value directly | Returns a **generator object**; values retrieved via `next()` or iteration |
+
+```python
+def regular():
+    return [1, 2, 3]
+
+def generator():
+    yield 1
+    yield 2
+    yield 3
+
+g = generator()
+print(next(g))  # 1
+print(next(g))  # 2
+```
+
+**Follow-up trap:** "What happens if you call a generator function — does the code run immediately?"
+
+No — calling `generator()` just creates a generator object; 
+**none of the function body executes** until you call `next()` or iterate over it. 
+This is a common misconception check.
+
+**Deeper follow-up:** mixing `yield` and `return` in a generator.
+
+```python
+def gen():
+    yield 1
+    return 
+    yield 2   # unreachable
+
+g = gen()
+print(next(g))  # 1
+next(g)  # raises StopIteration (with value if provided in return)
+```
+
+A `return` statement inside a generator doesn't return a value 
+to the caller in the normal sense — it sets the `value` attribute of 
+the raised `StopIteration` exception. This is advanced but sometimes probed 
+at senior levels.
+
+---
+
+## Bonus trap often bundled in: Shallow vs deep copy in function arguments
+
+Since Python passes arguments **by object reference** (not by value or by reference in the C/C++ sense — often called "pass by assignment"), mutable objects passed to functions can be modified in place:
+
+```python
+def modify(lst):
+    lst.append(4)   # mutates the original object
+
+nums = [1, 2, 3]
+modify(nums)
+print(nums)   # [1, 2, 3, 4] — original list changed
+```
+
+But reassignment inside the function does **not** affect the caller's variable:
+
+```python
+def reassign(lst):
+    lst = [9, 9, 9]   # rebinds local name, doesn't affect caller
+
+nums = [1, 2, 3]
+reassign(nums)
+print(nums)   # [1, 2, 3] — unchanged
+```
+
+This distinction — **mutation vs. reassignment** — is one of the most frequently tested Python fundamentals in interviews, since it reveals whether a candidate actually understands Python's object model rather than just memorizing "pass by reference/value" terminology.
