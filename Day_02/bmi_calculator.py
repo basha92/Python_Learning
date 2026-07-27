@@ -1,7 +1,4 @@
-#this program calculates the BMI of a person based on their weight and height using functions
-def calculate_bmi(weight, height):
-    bmi = weight / (height ** 2)
-    return bmi
+# This program calculates the BMI of a person based on their weight and height.
 
-bmi = calculate_bmi(72.5, 1.60)
-print(f"The BMI is: {bmi}")
+def calculate_bmi(weight, height):
+    return weight / (height ** 2)
