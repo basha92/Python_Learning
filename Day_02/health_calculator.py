@@ -1,14 +1,14 @@
 # This program calculates BMI and shows a simple health summary.
 
-from pathlib import Path
-import sys
+#from pathlib import Path
+#import sys
 
-if __package__:
-    from .bmi_calculator import calculate_bmi
-else:
-    sys.path.append(str(Path(__file__).resolve().parent))
-    from bmi_calculator import calculate_bmi
-
+#if __package__:
+    #from .bmi_calculator import calculate_bmi
+#else:
+    #sys.path.append(str(Path(__file__).resolve().parent))
+    #from bmi_calculator import calculate_bmi
+from bmi_calculator import calculate_bmi
 
 def calculate_weight_to_lose(weight, target_weight):
     return weight - target_weight
