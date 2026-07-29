@@ -1,0 +1,27 @@
+**1. What is a Python module?**
+A module is a single Python file (`.py`) containing reusable code — functions, classes, 
+or variables — that can be imported and used in other Python programs. 
+It helps organize code into logical, reusable units.
+
+**2. Difference between `import math` and `from math import sqrt`**
+- `import math` – imports the entire module; you access functions using the module name 
+as a prefix, e.g., `math.sqrt(4)`.
+- `from math import sqrt` – imports only the specified function/attribute directly 
+into the current namespace; you call it without the prefix, e.g., `sqrt(4)`. 
+This is more selective but can cause naming conflicts if multiple modules have functions 
+with the same name.
+
+**3. Why do we use virtual environments?**
+Virtual environments create isolated Python environments for each project, 
+with their own dependencies and package versions, independent of the system-wide 
+Python installation. This:
+- Avoids version conflicts between projects.
+- Keeps global Python installation clean.
+- Makes projects portable and reproducible (via `requirements.txt`).
+
+**4. Difference between `pip install` and `pip freeze`**
+- `pip install <package>` – downloads and installs a package (and its dependencies) 
+into the current environment.
+- `pip freeze` – lists all currently installed packages (with exact versions) 
+in the environment, typically used to generate a `requirements.txt` file for 
+reproducing the environment elsewhere.
