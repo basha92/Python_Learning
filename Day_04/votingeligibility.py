@@ -6,3 +6,5 @@ if age >= 20:
     print("You are eligible to vote.")
 else:
     print("You are not eligible to vote.")
+
+#bmi classification is already done in day 02 using if else nested loop.
