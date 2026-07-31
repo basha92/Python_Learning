@@ -1,13 +1,19 @@
 # this file allows user to input the credentials only 3 times
-#after that profile shall be locked
+# after that profile shall be locked
 username = "admin"
 password = "python123"
+attempts = 0
 
-while True:
+while attempts < 3:
     name = str(input("Enter user name: "))
     pwd = str(input("Enter password: "))
-    if name==username and pwd==password:
+
+    if name == username and pwd == password:
         print("Logged in Successfully!")
         break
     else:
-        print("Enter correct user name or password")
+        attempts += 1
+        if attempts == 3:
+            print("Account locked")
+        else:
+            print("Enter correct user name or password")
