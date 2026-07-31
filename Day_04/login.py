@@ -1,5 +1,6 @@
 # this file allows user to input the credentials only 3 times
 # after that profile shall be locked
+#userid, password and counter variables.
 username = "admin"
 password = "python123"
 attempts = 0
