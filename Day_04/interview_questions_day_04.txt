@@ -1,0 +1,143 @@
+Here are technical answers for each:
+
+**`for` vs `while`**
+`for` iterates over a known sequence or iterable (a list, range, string, etc.) 
+— it runs once per item and stops automatically when the iterable is exhausted. 
+`while` runs as long as a condition stays `True`, and you're responsible for 
+making sure that condition eventually becomes `False` (otherwise it loops forever). 
+Use `for` when you know what you're iterating over; use `while` when you're waiting 
+for a condition to change.
+
+```python
+for i in range(5):      # runs exactly 5 times
+    print(i)
+
+count = 0
+while count < 5:        # runs until condition fails
+    print(count)
+    count += 1
+```
+
+**`break`**
+Immediately exits the innermost loop entirely, skipping any remaining iterations.
+
+```python
+for i in range(10):
+    if i == 3:
+        break
+    print(i)   # prints 0, 1, 2
+```
+
+**`continue`**
+Skips the rest of the current iteration and jumps to the next one 
+— the loop keeps going, it just skips that one pass.
+
+```python
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)   # prints 0, 1, 3, 4
+```
+
+**`return` vs `print`**
+`print()` just displays output to the console/terminal 
+— it's for humans to see, and the function keeps running afterward. 
+`return` sends a value back to whatever called the function, ending the function's 
+execution, and that value can be stored, passed around, or used in further computation. 
+A function with only `print` and no `return` actually returns `None` to its caller.
+
+```python
+def add_print(a, b):
+    print(a + b)      # visible in console, but caller gets nothing usable
+
+def add_return(a, b):
+    return a + b       # caller can use this value
+
+result = add_return(2, 3)   # result = 5
+nothing = add_print(2, 3)   # nothing = None
+```
+
+**Why `raise ValueError`?**
+It signals that a function received an argument of the right *type* but 
+an inappropriate or invalid *value*, and it stops normal execution to force 
+the problem to be handled rather than silently producing wrong results. 
+Raising a specific, meaningful exception (instead of just printing an error 
+or returning `None`) lets calling code catch and respond to that exact failure 
+case with `try/except`, and makes bugs easier to trace.
+
+```python
+def set_age(age):
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+    return age
+```
+
+**Tuple unpacking**
+Assigning the elements of a tuple (or any iterable) to multiple variables in one line, 
+based on position.
+
+```python
+point = (3, 4)
+x, y = point   # x = 3, y = 4
+
+# Also works for swapping values
+a, b = 1, 2
+a, b = b, a    # a = 2, b = 1
+
+# With * to grab "the rest"
+first, *rest = (1, 2, 3, 4)   # first = 1, rest = [2, 3, 4]
+```
+
+**First-class functions**
+This means functions are treated like any other value in the language 
+— they can be assigned to variables, passed as arguments to other functions, 
+returned from functions, and stored in data structures like lists or dicts. 
+This is what makes decorators, callbacks, and higher-order functions 
+(like `map`, `filter`, `sorted(key=...)`) possible.
+
+```python
+def greet():
+    return "hello"
+
+my_var = greet          # assigned to a variable (no parentheses = the function itself)
+print(my_var())         # calling it through the variable
+
+def apply(func):
+    return func()
+
+print(apply(greet))     # passed as an argument
+```
+
+**`function` vs `function()`**
+`function` (no parentheses) refers to the function object itself 
+— it's a reference to the function in memory, not a call. `function()` 
+actually *invokes* the function, executes its code, and evaluates to whatever it returns.
+
+```python
+def greet():
+    return "hi"
+
+greet     # <function greet at 0x...> — just a reference, does nothing
+greet()   # "hi" — actually runs the function
+```
+
+This distinction matters a lot with callbacks: `button.on_click(greet)` 
+passes the function to be called later, while `button.on_click(greet())` 
+calls it immediately and passes its *return value* instead.
+
+**Why should software be modular?**
+Breaking a program into independent, self-contained pieces (modules, functions, classes) 
+makes it easier to: test each piece in isolation, reuse code without duplicating it, 
+understand and reason about one part without holding the whole system in your head, 
+fix bugs without risking unrelated code, and let multiple people work on different modules 
+simultaneously without constant conflicts.
+
+**Separation of Concerns**
+A design principle stating that a program should be split so each part handles 
+one distinct responsibility, with minimal overlap between parts. 
+For example, in a web app you'd typically separate: data storage/access logic, 
+business logic/rules, and the user interface — each layer doesn't need to 
+know the internal details of the others, just how to talk to it. 
+This reduces the ripple effect of changes (modifying how data is displayed 
+shouldn't require touching how it's stored), makes each piece independently testable, 
+and makes the overall system easier to maintain as it grows.
