@@ -47,3 +47,13 @@ common methods - add(), remove(), update(), pop()'''
 #fruits.pop()
 
 #print(fruits)
+
+'''tuples - () ordered and immutable(unchangeable); duplicates are ok. faster'''
+
+fruits = ('apple', 'orange', 'coconut', 'kiwi', 'dragon fruit', 'apple')
+
+#print(fruits.index('orange'))
+#print(len(fruits))
+#print('apple' in fruits)
+#returns the count of the string
+#print(fruits.count('apple'))
