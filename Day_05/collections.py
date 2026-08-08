@@ -50,10 +50,32 @@ common methods - add(), remove(), update(), pop()'''
 
 '''tuples - () ordered and immutable(unchangeable); duplicates are ok. faster'''
 
-fruits = ('apple', 'orange', 'coconut', 'kiwi', 'dragon fruit', 'apple')
+#fruits = ('apple', 'orange', 'coconut', 'kiwi', 'dragon fruit', 'apple')
 
 #print(fruits.index('orange'))
 #print(len(fruits))
 #print('apple' in fruits)
 #returns the count of the string
 #print(fruits.count('apple'))
+
+'''Dictionaries - {} do not allow duplicates. any type of data can be stored'''
+#fruits = {'apple', 'orange', 'coconut', 'kiwi', 'dragon fruit', 'apple'}
+student = {'Name': 'John', 'age': 30, 'courses': ['Maths', 'CompSci']}
+
+#prints whole dictionary
+#print (student)
+
+#prints particular element in dictionary
+#print(student['courses'])
+
+#or use the below method
+#print(student.get('Name'))
+
+#add or update element
+student.update({'Name': 'Jane', 'Phone': '555-55555', 'age': 25})
+print(student)
+
+#to see keys
+print(student.keys())
+ #to see values
+print(student.values())
