@@ -16,9 +16,11 @@ patients = [{"Name": "John", "Age": 35, "Height": 1.75, "Weight": 72},
             {"Name": "Mary", "Age": 28, "Height": 1.25, "Weight": 65},
             {"Name": "Laila", "Age": 26, "Height": 1.03, "Weight": 70},]
 
+#calculating BMI
 def calculate_bmi(weight, height):
     return weight / (height ** 2)
 
+#classifying using BMI value
 def classify_bmi(bmi):
     if bmi < 18.5:
         return "Underweight"
@@ -28,6 +30,7 @@ def classify_bmi(bmi):
         return "Overweight"
     return "Obesity"
 
+#looping through the list 
 for patient in patients:
     bmi = calculate_bmi(patient["Weight"], patient["Height"])
     patient["BMI"] = round(bmi, 2)
