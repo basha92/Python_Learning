@@ -1,0 +1,144 @@
+## 1. List vs Tuple
+Both store ordered collections, but:
+- **List** `[]` — mutable (can add/remove/change items after creation)
+- **Tuple** `()` — immutable (locked once created)
+
+```python
+my_list = [1, 2, 3]
+my_list.append(4)      # ✅ works
+
+my_tuple = (1, 2, 3)
+my_tuple[0] = 99        # ❌ TypeError
+```
+
+Use lists when data changes over time (like your `patients` list). 
+Use tuples for fixed data that shouldn't be accidentally modified — 
+like coordinates `(x, y)` or a fixed record.
+
+## 2. Why a Dictionary instead of a List?
+A dictionary lets you access values by **meaningful key** instead of 
+remembering numeric positions.
+
+```python
+patient = {"Name": "John", "BMI": 18.5}
+patient["Name"]        # clear and direct
+
+patient_list = ["John", 18.5]
+patient_list[0]         # works, but you have to remember index 0 = name
+```
+
+This is exactly why your patient records are dicts — `p["BMI"]` is self-documenting; 
+`p[4]` is not.
+
+## 3. What is a Set?
+An unordered collection of **unique** values — duplicates are automatically removed.
+
+```python
+s = {1, 2, 2, 3}
+print(s)   # {1, 2, 3}
+```
+
+Useful when you only care about *membership* or *uniqueness*, 
+not order or duplicates — e.g., tracking unique patient names already added, or 
+removing duplicate entries.
+
+## 4. Can dictionary keys repeat?
+No. Keys are unique — assigning to an existing key **overwrites** the old value, 
+it doesn't create a duplicate entry.
+
+```python
+d = {"Name": "John"}
+d["Name"] = "Alice"
+print(d)   # {"Name": "Alice"} — overwritten, not duplicated
+```
+
+(Values *can* repeat — just not keys.)
+
+## 5. `append()` vs `extend()`
+- `append()` adds its argument as **one single element**, even if it's a list.
+- `extend()` adds each element of an iterable **individually**.
+
+```python
+a = [1, 2]
+a.append([3, 4])     # [1, 2, [3, 4]]  ← nested list added as one item
+
+b = [1, 2]
+b.extend([3, 4])     # [1, 2, 3, 4]    ← items merged in individually
+```
+
+In your project: `patients.append(patient)` is correct because you want to add 
+one dict as one entry, not merge its keys into the list.
+
+## 6. When would you use a Tuple?
+When data should never change after creation, or you want to signal 
+"this is a fixed record." Common cases:
+- Coordinates: `(x, y)`
+- A function returning multiple fixed values: `return name, age`
+- Dictionary keys (lists can't be dict keys since they're mutable — tuples can)
+- Any time you want to *prevent* accidental modification
+
+## 7. Why are dictionaries fast for searching?
+Dictionaries use a **hash table** internally. When you look up `d["Name"]`, 
+Python computes a hash of `"Name"` and jumps almost directly to where that 
+value is stored — it doesn't scan item by item.
+
+This makes lookup **O(1)** on average, compared to a list where 
+`if x in my_list` has to check each element one by one — **O(n)**.
+
+This is exactly why your `search_patient()` function is slower than it could be 
+— it loops through the whole list checking each name. If you stored patients in a dict 
+keyed by name instead of a list, lookup would be instant regardless of how many patients 
+you have.
+
+## 8. List vs Set
+| | List | Set |
+|---|---|---|
+| Order | Preserved | Not guaranteed |
+| Duplicates | Allowed | Automatically removed |
+| Lookup speed | O(n) — slow | O(1) — fast (hash-based, like dicts) |
+| Indexing (`x[0]`) | Yes | No |
+
+Use a list when order/duplicates matter (your patient records). 
+Use a set when you just need fast uniqueness checks.
+
+## 9. Mutable vs Immutable
+- **Mutable** = can be changed after creation (list, dict, set)
+- **Immutable** = cannot be changed after creation (tuple, string, int, float)
+
+```python
+name = "John"
+name[0] = "J"    # ❌ TypeError — strings are immutable, can't change a character in place
+name = "Jack"     # ✅ this just reassigns the variable to a new string, doesn't modify the old one
+```
+
+Why it matters practically: mutable objects can be changed "by accident" 
+if passed around and modified inside a function (like your `patients` 
+list being modified inside `add_patient()`), while immutable objects are always 
+safe to pass without that risk.
+
+## 10. How would you store multiple patient records?
+Your own project is the answer: **a list of dictionaries.**
+
+```python
+patients = [
+    {"Name": "John", "Age": 25, "Height": 1.75, "Weight": 70, "BMI": 22.9},
+    {"Name": "Alice", "Age": 30, "Height": 1.65, "Weight": 60, "BMI": 22.0},
+]
+```
+
+Why this shape specifically:
+- **List** → because you have many records, order can matter (insertion order), 
+and duplicates (two patients could share a name) are fine
+- **Dict per record** → because each patient has multiple *named* fields, 
+and `p["BMI"]` is far clearer than `p[4]`
+
+An interviewer would want you to also mention the alternative — a dict keyed by 
+a unique ID (like `patient_id`) when you need **fast lookup by that ID**, 
+trading off "easy to scan in order" for "instant lookup," tying back to question 7.
+
+---
+
+A good follow-up they might ask: *"Your `search_patient()` currently loops through a list 
+— how would you redesign patient storage for O(1) lookup by name?"* 
+Want to work through that redesign together? It'd tie #7, #9, and #10 into one 
+concrete refactor of your actual project.
