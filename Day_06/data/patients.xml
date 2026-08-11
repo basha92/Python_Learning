@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <root>
+     <0>
+         <name>John</name>
+         <age>30</age>
+         <height>1.75</height>
+         <weight>72</weight>
+     </0>
+     <1>
+         <name>Alice</name>
+         <age>29</age>
+         <height>1.62</height>
+         <weight>60</weight>
+     </1>
+     <2>
+         <name>David</name>
+         <age>42</age>
+         <height>1.8</height>
+         <weight>95</weight>
+     </2>
+ </root>
