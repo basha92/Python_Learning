@@ -1,0 +1,159 @@
+Here are clear answers to each:
+
+**What is the difference between `"r"`, `"w"` and `"a"`?**
+
+These are file-opening modes:
+- `"r"` (read) — opens a file for reading only. Fails with `FileNotFoundError` if the file doesn't exist. The file pointer starts at the beginning.
+- `"w"` (write) — opens a file for writing. Creates the file if it doesn't exist. **If the file already exists, it erases all existing content first** (truncates it to zero length) before writing.
+- `"a"` (append) — opens a file for writing, but the file pointer starts at the **end** of the file. Creates the file if it doesn't exist. Existing content is preserved, and new data is added after it.
+
+You can also combine these with `"+"` for read/write (e.g., `"r+"`, `"w+"`) and `"b"` for binary mode (e.g., `"rb"`, `"wb"`).
+
+---
+
+**Why do we use `with open(...)`?**
+
+`with open(...)` is a **context manager** — it automatically closes the file for you once the block finishes, even if an exception occurs inside it.
+
+```python
+with open("file.txt", "r") as f:
+    content = f.read()
+# file is automatically closed here
+```
+
+Without `with`, you'd need to manually call `f.close()`, and if an error happened before that line, the file could stay open — leading to resource leaks, locked files, or data not being flushed to disk (especially in write mode).
+
+---
+
+**What happens if you open a file in `"w"` mode when it already exists?**
+
+Its contents are **immediately erased** — the moment you call `open(path, "w")`, the file is truncated to empty, even before you write anything. If you only wanted to add data without losing what's there, you'd use `"a"` (append) instead.
+
+---
+
+**What is `pathlib`?**
+
+`pathlib` is a Python standard library module (since Python 3.4) for working with filesystem paths in an **object-oriented** way. Instead of treating paths as plain strings, it represents them as `Path` objects with useful methods and operators.
+
+```python
+from pathlib import Path
+
+p = Path("Day_06/patient_register/patient_001.txt")
+print(p.name)      # patient_001.txt
+print(p.stem)      # patient_001
+print(p.suffix)    # .txt
+print(p.parent)    # Day_06/patient_register
+print(p.exists())  # True/False
+```
+
+---
+
+**Why might `pathlib` be preferable to manually constructing file paths?**
+
+A few reasons:
+1. **Cross-platform safety** — Windows uses backslashes (`\`) and Unix/Mac use forward slashes (`/`). `pathlib` handles this automatically, so you don't hardcode separators that break on other OSes.
+2. **Readable path joining** — you use the `/` operator instead of string concatenation:
+   ```python
+   base = Path("Day_06")
+   file_path = base / "patient_register" / "patient_001.txt"
+   ```
+   This is cleaner than `"Day_06" + "/" + "patient_register" + "/" + "patient_001.txt"`, which is also error-prone (missing slashes, wrong separator).
+3. **Built-in useful methods** — `.exists()`, `.is_file()`, `.is_dir()`, `.glob()`, `.mkdir()`, `.stem`, `.suffix`, etc., replace verbose `os.path` function calls.
+4. **Less error-prone** — no need to remember whether a path string should or shouldn't end with a slash.
+
+---
+
+**How do you check whether a file exists?**
+
+Using `pathlib`:
+```python
+from pathlib import Path
+
+if Path("patient_001.txt").exists():
+    print("File exists")
+```
+
+You can be more specific with `.is_file()` (true only for files, not directories) or `.is_dir()` (true only for directories).
+
+Alternatively (older style), using `os.path`:
+```python
+import os
+if os.path.exists("patient_001.txt"):
+    print("File exists")
+```
+
+Note: checking existence before opening isn't always necessary — often it's simpler and safer to just try opening the file and catch `FileNotFoundError`, since the file could be deleted between the check and the actual open (a race condition, though rare in simple scripts).
+
+---
+
+**How do you get all files from a directory?**
+
+Using `pathlib`'s `.glob()` or `.iterdir()`:
+```python
+from pathlib import Path
+
+folder = Path("Day_06/patient_register")
+
+# Get files matching a pattern
+patient_files = list(folder.glob("patient_*.txt"))
+
+# Get everything (files and folders) in the directory
+all_items = list(folder.iterdir())
+
+# Recursively search subdirectories too
+all_txt_files = list(folder.rglob("*.txt"))
+```
+
+`glob()` supports wildcard patterns (`*`, `?`, `[abc]`), which is why it's commonly used to filter by filename pattern or extension, like in your `patient_validator` example (`glob("patient_*.txt")`).
+
+---
+
+**How would you handle a missing file?**
+
+Two common approaches:
+
+1. **Check first (look before you leap):**
+```python
+if not file_path.exists():
+    print("File not found")
+else:
+    # process file
+```
+
+2. **Try/except (easier to ask forgiveness than permission — the more Pythonic approach):**
+```python
+try:
+    with open(file_path, "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    print("File not found")
+```
+
+The try/except approach is generally preferred in Python because it avoids race conditions (file could be deleted between the check and the open) and follows Python's "EAFP" philosophy (Easier to Ask Forgiveness than Permission) rather than "LBYL" (Look Before You Leap).
+
+---
+
+**What's the difference between a file path and a file object?**
+
+- A **file path** is just a string (or `Path` object) that describes the **location** of a file on disk — e.g., `"Day_06/patient_register/patient_001.txt"`. It doesn't give you access to the file's contents; it's just an address.
+- A **file object** (sometimes called a file handle) is what you get back from calling `open(path)`. It represents an **open connection** to that file, and provides methods like `.read()`, `.write()`, `.readline()`, `.close()` to actually interact with the file's contents.
+
+```python
+file_path = Path("patient_001.txt")   # just a path (string-like)
+file_obj = open(file_path, "r")       # an open file object with read/write methods
+content = file_obj.read()             # actually reading data
+file_obj.close()
+```
+
+You need the path to *locate* the file, but you need the file object to *interact* with it.
+
+---
+
+**Why is file handling important in automation?**
+
+File handling is central to automation because:
+1. **Data persistence** — automated scripts often need to read input (configs, data files, logs) and write output (reports, processed data) without human interaction.
+2. **Batch processing** — like your patient validator, automation often means looping through many files (e.g., a folder of patient records) and processing each one the same way, which requires reliable file reading/writing and directory traversal.
+3. **Error resilience** — automated scripts run unattended, so they must handle missing files, permission errors, or malformed data gracefully (e.g., logging errors and continuing) rather than crashing and requiring manual intervention.
+4. **Integration** — automation scripts often read from or write to files that other systems produce/consume (CSVs, logs, config files), making file I/O the "glue" between different parts of a pipeline.
+5. **Auditability** — writing logs or summary reports (like your "Patient Processing Summary") gives visibility into what an automated process did, which is critical when no human is watching it run in real time.
