@@ -157,3 +157,11 @@ File handling is central to automation because:
 3. **Error resilience** — automated scripts run unattended, so they must handle missing files, permission errors, or malformed data gracefully (e.g., logging errors and continuing) rather than crashing and requiring manual intervention.
 4. **Integration** — automation scripts often read from or write to files that other systems produce/consume (CSVs, logs, config files), making file I/O the "glue" between different parts of a pipeline.
 5. **Auditability** — writing logs or summary reports (like your "Patient Processing Summary") gives visibility into what an automated process did, which is critical when no human is watching it run in real time.
+
+
+
+| Syntax | Meaning                    | Example         |
+| ------ | -------------------------- | --------------- |
+| `()`   | Call a function/method     | `file.exists()` |
+| `[]`   | Access by index/key        | `files[0]`      |
+| `.`    | Access an attribute/method | `file.name`     |
