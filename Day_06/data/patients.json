@@ -3,18 +3,21 @@
     "name": "John",
     "age": 30,
     "height": 1.75,
-    "weight": 72
+    "weight": 72,
+    "bmi": 23.510204081632654
   },
   {
     "name": "Alice",
     "age": 29,
     "height": 1.62,
-    "weight": 60
+    "weight": 60,
+    "bmi": 22.86236854138088
   },
   {
     "name": "David",
     "age": 42,
     "height": 1.8,
-    "weight": 95
+    "weight": 95,
+    "bmi": 29.320987654320987
   }
 ]
