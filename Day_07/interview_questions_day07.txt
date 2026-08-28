@@ -1,0 +1,119 @@
+Here you go:
+
+**What is JSON?**
+JSON (JavaScript Object Notation) is a lightweight, text-based data format used for storing and exchanging data. It represents data as key-value pairs and ordered lists, and is language-independent even though it's derived from JavaScript object syntax. It's commonly used for config files, APIs, and data interchange between systems.
+
+**What Python data type does a JSON object normally become?**
+A JSON object (`{...}`) becomes a Python `dict`. Correspondingly, a JSON array (`[...]`) becomes a `list`, JSON strings become `str`, numbers become `int`/`float`, `true`/`false` become `True`/`False`, and `null` becomes `None`.
+
+**What does `json.load()` do?**
+It reads JSON data from a file-like object (something with a `.read()` method, like an open file) and deserializes it into a Python object.
+
+```python
+with open("data.json") as f:
+    data = json.load(f)
+```
+
+**What does `json.dump()` do?**
+It serializes a Python object into JSON and writes it directly to a file-like object.
+
+```python
+with open("data.json", "w") as f:
+    json.dump(data, f)
+```
+
+**Difference between `json.load()` and `json.loads()`?**
+- `json.load()` takes a **file object** and reads JSON from it.
+- `json.loads()` (the "s" stands for **string**) takes a JSON-formatted **string** and parses it directly.
+
+```python
+json.load(open("data.json"))       # from file
+json.loads('{"key": "value"}')     # from string
+```
+
+**Difference between `json.dump()` and `json.dumps()`?**
+- `json.dump()` writes serialized JSON directly to a **file object**.
+- `json.dumps()` returns the serialized JSON as a **string** instead of writing it anywhere.
+
+```python
+json.dump(data, open("out.json", "w"))  # writes to file
+s = json.dumps(data)                    # returns a string
+```
+
+**How would you access a nested JSON value?**
+After loading the JSON into a Python dict/list, chain key lookups and/or index access:
+
+```python
+data = json.loads(json_string)
+value = data["user"]["address"]["city"]
+```
+
+For safer access (avoiding `KeyError`), use `.get()` with defaults, optionally chained:
+
+```python
+value = data.get("user", {}).get("address", {}).get("city")
+```
+
+For deeply uncertain structures, libraries like `jmespath` or writing a small recursive helper can help.
+
+**How would you handle an invalid JSON file?**
+Wrap the parsing in a `try/except` block catching `json.JSONDecodeError` (and typically `FileNotFoundError` or `OSError` for file issues):
+
+```python
+try:
+    with open("data.json") as f:
+        data = json.load(f)
+except json.JSONDecodeError as e:
+    print(f"Invalid JSON: {e}")
+except FileNotFoundError:
+    print("File not found")
+```
+
+This lets you log the error, skip the file, or provide a fallback default instead of crashing.
+
+**Why would you use `pathlib` together with JSON processing?**
+`pathlib` provides an object-oriented, cross-platform way to handle file paths, which pairs well with JSON file I/O:
+
+```python
+from pathlib import Path
+import json
+
+path = Path("data") / "config.json"
+data = json.loads(path.read_text())
+```
+
+Benefits:
+- Cleaner path construction (`/` operator instead of string concatenation)
+- Convenient methods like `.read_text()`, `.write_text()`, `.exists()`, `.glob()`
+- Cross-platform compatibility (handles Windows vs. Unix separators automatically)
+- Easy directory traversal (e.g., `Path("data").glob("*.json")`) when processing multiple files
+
+**How would you process 1,000 JSON files without duplicating code?**
+Write a reusable function that handles one file, then loop over all files (e.g., found via `pathlib.Path.glob()`), calling that function each time:
+
+```python
+from pathlib import Path
+import json
+
+def process_file(path: Path):
+    try:
+        data = json.loads(path.read_text())
+        # ... do processing ...
+        return data
+    except json.JSONDecodeError as e:
+        print(f"Skipping {path}: {e}")
+        return None
+
+results = []
+for file_path in Path("json_folder").glob("*.json"):
+    result = process_file(file_path)
+    if result is not None:
+        results.append(result)
+```
+
+Key ideas:
+- Factor the per-file logic into a single function (avoids duplication).
+- Use `Path.glob()` or `Path.rglob()` to iterate over files instead of hardcoding names.
+- Handle errors per-file so one bad file doesn't stop the whole batch.
+- For performance on large batches, consider `concurrent.futures` (threading or multiprocessing) to parallelize I/O-bound or CPU-bound work.
+- If files share structure, consider a generator function to process lazily and keep memory usage low.
