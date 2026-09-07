@@ -1,6 +1,6 @@
 #this is example of patient registry
 from pathlib import Path
-from json_validation import read_patient_file
+from Day_08.json_validation import read_patient_file
 
 def main():
     patient_dir = Path("Day_07/data")
@@ -23,6 +23,9 @@ def main():
 
 
 def print_summary(files_found, processed, failed, errors):
+    file_path = "Day_07/data/output.txt"
+    #with open(file_path,"w") as file:
+        #file.write()
     print("=" * 32)
     print("Patient Processing Summary")
     print("=" * 32)

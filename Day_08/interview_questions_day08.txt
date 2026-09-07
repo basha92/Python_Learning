@@ -1,0 +1,60 @@
+Here's a solid set of answers for these:
+
+**What is an exception in Python?**
+An exception is an event that occurs when Python hits an error during execution that disrupts the normal flow of the program — like dividing by zero, opening a file that doesn't exist, or trying to convert `"abc"` to an integer. Instead of just crashing silently, Python raises an "exception object" that carries information about what went wrong.
+
+**Why do we use `try` and `except`?**
+To handle errors gracefully instead of letting the program crash. Code that might fail goes in the `try` block; if an exception occurs, control jumps to the matching `except` block instead of terminating the program. This lets you log the problem, recover, or continue with other work.
+
+**Difference between `ValueError` and `TypeError`?**
+- `ValueError`: the type is correct, but the value is inappropriate. E.g., `int("hello")` — it's a string, which is fine for `int()`, but the content isn't a valid number.
+- `TypeError`: the type itself is wrong for the operation. E.g., `"5" + 5` — you can't add a string and an int together.
+
+**What does `except ValueError as error` mean?**
+It catches a `ValueError` if one is raised, and binds the exception object to the variable `error` so you can inspect it — e.g., print `str(error)` to see the specific error message, or log it, rather than just knowing *that* something failed.
+
+**Purpose of `else`?**
+Code in the `else` block runs only if the `try` block completed *without* raising an exception. It's useful for separating "code that might fail" from "code that should only run on success" — keeps the `try` block minimal so you don't accidentally catch exceptions from code that wasn't the actual risk.
+
+**Purpose of `finally`?**
+Code in `finally` always runs, whether an exception occurred or not — even if there's a `return` or an unhandled exception. It's used for cleanup: closing files, releasing locks, closing database connections, etc.
+
+**Why shouldn't we use a bare `except`?**
+A bare `except:` catches *everything*, including exceptions you didn't anticipate — including things like `KeyboardInterrupt` or `SystemExit`, and genuine bugs (typos, logic errors) that you'd want to know about. This can hide real problems and make debugging much harder. Better to catch specific exception types you actually expect and know how to handle.
+
+**What happens if an exception isn't handled?**
+It propagates up the call stack. If nothing catches it anywhere, the program terminates and Python prints a traceback showing the exception type, message, and where it occurred.
+
+**How would you make an automation program continue when one file fails?**
+Wrap the per-file processing logic in a `try`/`except` inside your loop, so an exception on one iteration doesn't stop the whole loop:
+
+```python
+for filename in files:
+    try:
+        process(filename)
+    except Exception as e:
+        log_error(filename, e)
+        continue
+```
+
+**How would you report which file caused the failure?**
+Include the filename in the log/error message when you catch the exception — e.g.:
+
+```python
+except Exception as e:
+    print(f"Failed to process {filename}: {e}")
+    # or log to a file: logging.error(f"{filename}: {e}")
+```
+Ideally write these to a persistent error log (file or list) so you have a record afterward, not just a console print.
+
+**The 10,000 patient files scenario — A or B?**
+
+**B — record the error, skip that file, and continue.**
+
+Why:
+1. **One bad file shouldn't block 9,999 good ones.** If you stop entirely, you've made zero progress and have to restart from scratch (or build resume logic, which is more work than just handling the error).
+2. **Failures like invalid JSON are usually isolated, not systemic** — a single corrupted or malformed record doesn't mean the rest of the dataset is compromised.
+3. **You still need visibility.** Skipping silently would be bad — you should log the filename, the error, and ideally the record count, so someone can go back and fix or manually review file #4,381 without wondering whether other files were also skipped.
+4. **Exception**: if the failure suggests something systemic (e.g., every file is failing the same way, indicating a bug in your parsing logic or a bad upstream data feed), you'd want to notice that pattern and stop — which is why logging with counts/frequency matters, not just catching and moving on blindly.
+
+So the ideal answer shows you understand *robustness with accountability*: don't crash on one bad input, but don't fail silently either.
