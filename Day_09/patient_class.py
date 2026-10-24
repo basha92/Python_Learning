@@ -6,7 +6,7 @@ class patient_details():
     def __init__(self, file_path):  #filepath is chosen because that's where all data is stored and it is common.
         self.file_path = Path(file_path)
 
-    def bmi_calculator(self.file_path):
+    def bmi_calculator (self):
         with open(self.file_path,"r") as file:
             patients = json.load(file)
             for patient in patients:
