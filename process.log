@@ -1,0 +1,15 @@
+2026-11-02 20:15:27,028 - INFO - Validating name
+2026-11-02 20:15:27,029 - INFO - Validating age
+2026-11-02 20:15:27,029 - INFO - Validating height
+2026-11-02 20:15:27,029 - INFO - Validating weight
+2026-11-02 20:15:27,034 - INFO - Patient file validated successfully
+2026-11-02 20:20:14,248 - INFO - Validating name
+2026-11-02 20:20:14,249 - INFO - Validating age
+2026-11-02 20:20:14,249 - INFO - Validating height
+2026-11-02 20:20:14,249 - INFO - Validating weight
+2026-11-02 20:20:14,249 - INFO - Patient file validated successfully
+2026-11-02 20:20:26,578 - INFO - Validating name
+2026-11-02 20:20:26,580 - INFO - Validating age
+2026-11-02 20:20:26,580 - INFO - Validating height
+2026-11-02 20:20:26,581 - INFO - Validating weight
+2026-11-02 20:20:26,581 - INFO - Patient file validated successfully
