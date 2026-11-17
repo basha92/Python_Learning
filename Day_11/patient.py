@@ -31,10 +31,13 @@ class Patient:
 
     @age.setter
     def age(self, new_age):
-        if not isinstance(new_age, int) or not (1<=new_age<=120):
-            print("Age must be between 1 to 120")
-        else:
-            self._age = new_age
+        if not isinstance(new_age, int) or isinstance(new_age, bool):
+            raise TypeError("Age must be an integer.")
+
+        if not 1 <= new_age <= 120:
+            raise ValueError("Age must be between 1 and 120.")
+
+        self._age = new_age
 #height getter and setter
     @property
     def height(self):

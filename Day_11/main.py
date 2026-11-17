@@ -13,7 +13,7 @@ def main():
     #1. create a valid patient
     try:
         p1 = Patient("Arun", 31, 70, 175)
-    except ValueError as e:
+    except (ValueError, TypeError) as e:
         print("Error: ", e)
         return
     display_details(p1)
