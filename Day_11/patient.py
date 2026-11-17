@@ -91,3 +91,14 @@ class Patient:
 #patient.weight = 85
 #print(f"New BMI: {patient.bmi}")           # Output: New BMI: 27.76
 #print(f"New Category: {patient.get_bmi_category}") # Output: New Category: Overweight
+
+#trying to access internal variable
+patient = Patient("Arun", 31, 70, 175)
+
+print(patient._age)
+
+#patient.age = 150       # Setter runs, validation rejects it
+#print(patient.age)      # Original value: 31
+
+#patient._age = 150      # Bypasses the setter
+#print(patient.age)      # Displays: 150

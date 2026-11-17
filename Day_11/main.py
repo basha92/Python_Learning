@@ -6,8 +6,7 @@ def display_details(patient):
     print(f"Age: {patient.age}")
     print(f"Weight: {patient.weight}")
     print(f"Height: {patient.height}")
-    print(f"BMI: {patient.bmi}")
-    print(f"Name: {patient.bmi_category}")
+    print(f"BMI: {patient.bmi} {patient.bmi_category}")
 
 def main():
     #1. create a valid patient
@@ -23,10 +22,21 @@ def main():
     print("\nAfter weight update:")
     display_details(p1)
 
+    #3. Trying to update age
+    try:
+        p1.age = 130
+    except ValueError as e:
+        print(e)
+
+    print(p1.age)
+
+
     # 3. Try invalid data
     records = [("Ravi", 150, 60, 170),
                ("Sam", 25, -5, 170),
-               ("", 25, 60, 170)]
+               ("", 25, 60, 170),
+               ("Kenny", True, 70, 175),
+               ("Kenny1", 31, 70, 0)]
 
     for rec in records:
         try:
