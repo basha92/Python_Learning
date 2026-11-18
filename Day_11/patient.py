@@ -1,3 +1,8 @@
+#The key lesson: A single underscore (_age) is a convention that tells developers an attribute is intended for internal use.
+#Python does not enforce that restriction.
+
+
+
 #Build a Patient Data Validation System
 #Your program should:
 #1. Create patient objects.
