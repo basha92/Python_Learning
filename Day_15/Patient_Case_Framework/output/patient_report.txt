@@ -1,0 +1,27 @@
+===== PATIENT CASE REPORT =====
+
+Patient ID: 1001
+Name: Aaron
+Age: 38
+Surgery: Knee Replacement
+
+Patient ID: 1002
+Name: Kevin
+Age: 23
+Surgery: Hip Implant
+
+===== CAD PROCESSING =====
+Tibial part validated
+Tibial part processed
+Tibial part exported
+Femoral part validated
+Femoral part processed
+Femoral part exported
+Insert part validated
+Insert part processed
+Insert part exported
+
+===== REJECTED PATIENTS =====
+Patient record ('1004', 'Sami', 45, 'Knee Replacement'): Patient ID must be an integer.
+Patient record (1005, '', 52, 'Knee Replacement'): Name cannot be empty.
+Patient record (1006, 'KK', 150, 'Knee Replacement'): Age must be between 1 and 120.
